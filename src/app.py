@@ -12,6 +12,8 @@ df = pd.read_csv('movingdf3.csv')
 # Load additional variables
 av = pd.read_csv('additional_vars.csv', sep=";", parse_dates=['date'], nrows=4)
 
+for col in av.columns[1:4]:
+    av[col] = av[col].astype(float)
 # Assuming 'relevant_columns' contains the list of columns you want to include
 relevant_columns = av.columns[1:4].tolist()  # Or specify your columns ['col1', 'col2', ...]
 
