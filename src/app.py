@@ -13,7 +13,8 @@ df = pd.read_csv('movingdf3.csv')
 av = pd.read_csv('additional_vars.csv', sep=";", parse_dates=['date'], nrows=4)
 
 for col in av.columns[1:4]:
-    av[col] = av[col].astype(float)
+    av[col] = av[col].str.replace(',', '.').astype(float)
+    #av[col] = av[col].astype(float)
 # Assuming 'relevant_columns' contains the list of columns you want to include
 relevant_columns = av.columns[1:4].tolist()  # Or specify your columns ['col1', 'col2', ...]
 
@@ -201,7 +202,7 @@ def update_graph(umsatzklassen, region, wohngegend, selected_classes, selected_a
 
     # Calculate the average prices and percenstage differences for the selected classes
     average_prices = filtered_data.groupby('date')[selected_classes].mean()
-    percentage_differences = average_prices.pct_change().fillna(0) * 100 + 100
+    percentage_differences = average_prices.pct_change().fillna(0) * 100
 
     # Create traces for the selected classes
     traces = []
@@ -234,7 +235,7 @@ def update_graph(umsatzklassen, region, wohngegend, selected_classes, selected_a
         'data': traces,
         'layout': go.Layout(
             title='Prozentuale Veränderung (YoY) vs. Inflationsrate',
-            yaxis={'title': 'Änderungsrate in %', 'range': [80, 150]},
+            yaxis={'title': 'Änderungsrate in %', 'range': [-4, 8]},
             margin={'l': 40, 'b': 40, 't': 40, 'r': 10},
             legend={'x': 0, 'y': 1},
             hovermode='closest'
